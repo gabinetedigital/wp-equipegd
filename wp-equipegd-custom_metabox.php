@@ -24,12 +24,6 @@ $meta_boxes_equipegd[] = array(
 						'desc'		=> 'Ordem que o membro deve aparecer',
 						'type'		=> 'text'
 				),
-				array(
-						'name'		=> 'Grupo',
-						'id'		=> $prefix . 'grupo',
-						'desc'		=> 'Grupo a que o membro pertence',
-						'type'		=> 'text'
-				)
 		)
 );
 
