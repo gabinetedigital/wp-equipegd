@@ -20,7 +20,7 @@ function wp_equipegd_equipe() {
 			'labels' => $labels,
 			'hierarchical' => false,
 			'supports' => array( 'title', 'editor', 'author', 'comments', 'revisions'),
-			//'taxonomies' => array( 'category'),
+			'taxonomies' => array( 'grupo_equipegd'),
 			'public' => true,
 			'show_ui' => true,
 			'show_in_menu' => true,
