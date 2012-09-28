@@ -41,30 +41,41 @@ class ListaEquipeGDWidget extends WP_Widget
     extract($args, EXTR_SKIP);
  
     $args_query_post = '';
+	$txtreturn		 = '';
+	$titulo			 = empty($instance['titulo']) ? ' ' : apply_filters('widget_titulo', $instance['titulo']);
+    $colunas		 = $instance['colunas'];
+    $custom_post 	 = 'equipegd_equipe';
+    $args_query_post .= "post_type=" . $custom_post;
+	$args_query_post .= "&orderby=meta_value_num&meta_key=wp_equipegd_ordem";
+	$args_query_post .= "&order=ASC";
 
-    echo "<li class='span".$instance['colunas']."'><div class='thumbnail equipe ".$instance['css_class']."'>";
-    $titulo = empty($instance['titulo']) ? ' ' : apply_filters('widget_titulo', $instance['titulo']);
-    $colunas = $instance['colunas'];
-    $custom_post = 'equipegd_equipe';
-    $args_query_post = $args_query_post . "post_type=" . $custom_post;
-    
-    echo $before_title . $titulo . $after_title;;
-    query_posts($args_query_post);
+	query_posts($args_query_post);
+
+	$txtreturn .= "<div class='equipe'>";
+	$txtreturn .= "<h3>".$titulo."</h3>";
+	$txtreturn .= "<ul class='thumbnails'>";
+
 	if (have_posts()) : 
-		echo "<ul>";
 		while (have_posts()) : the_post(); 
 			$cargo = get_post_meta(get_the_ID(),'wp_equipegd_cargo', true);
 			$ordem = get_post_meta(get_the_ID(),'wp_equipegd_ordem', true);
-			$grupo = get_post_meta(get_the_ID(),'wp_equipegd_grupo', true);
-			
-			echo "<li>".get_the_title()."<br>Cargo: " . $cargo . "<br>Ordem: " . $ordem ."<br>Grupo: " . $grupo . "</li>";
-	 		
+			$grupo = get_the_term_list(get_the_ID(), 'grupo_equipegd' );
+
+			$txtreturn .= "<li class='span".$colunas."'>";
+			$txtreturn .= "<div class='thumbnail'>";
+			$txtreturn .= "<h4>".get_the_title()."</h4>";
+			$txtreturn .= "<h5>". $cargo . "</h5>";
+			$txtreturn .= "</div>";
+			$txtreturn .= "</li>";
+
 		endwhile;
-		echo "</ul>";
 	endif; 
 	wp_reset_query();
 	
-	echo "</div></li>";
+	$txtreturn .= "</ul>";
+	$txtreturn .= "</div>";
+	
+	echo $txtreturn;
   }
  
 }
@@ -129,9 +140,8 @@ class EquipeGDWidget extends WP_Widget
 		while (have_posts()) : the_post(); 
 			$cargo = get_post_meta(get_the_ID(),'wp_equipegd_cargo', true);
 			$ordem = get_post_meta(get_the_ID(),'wp_equipegd_ordem', true);
-			$grupo = get_post_meta(get_the_ID(),'wp_equipegd_grupo', true);
 			
-			echo "<li>".get_the_title()."<br>Cargo: " . $cargo . "<br>Ordem: " . $ordem ."<br>Grupo: " . $grupo . "</li>";
+			echo "<li>".get_the_title()."<br>Cargo: " . $cargo . "<br>Ordem: " . $ordem ."</li>";
 	 		
 		endwhile;
 		echo "</ul>";
