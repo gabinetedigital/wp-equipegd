@@ -10,7 +10,7 @@ class ListaEquipeGDWidget extends WP_Widget
 	function ListaEquipeGDWidget()
 	{
 		$widget_ops = array('classname' => 'ListaEquipeGDWidget', 'description' => 'Lista dos membros da equipe do Gabinete Digital.' );
-		$this->WP_Widget('ListaEquipeGDWidget', 'Gabinete Digital - Equipe', $widget_ops);		
+		$this->WP_Widget('ListaEquipeGDWidget', 'Gabinete Digital - Equipe Lista', $widget_ops);		
 	}
 
 	function form($instance)
@@ -48,10 +48,6 @@ class ListaEquipeGDWidget extends WP_Widget
     $custom_post 	 = 'equipegd_equipe';
     $args_query_post .= "post_type=" . $custom_post;
 	$js = new ListaEquipeGDWidget();
-	
-	//$args_query_post .= "tax_query='terms=gabinetedigital'";
-//			'field' => 'slug',
-//			'terms' => 'bob''";
 	
 	$args_query_post .= "&orderby=meta_value_num&meta_key=wp_equipegd_ordem";
 	$args_query_post .= "&order=ASC";
@@ -182,7 +178,7 @@ class EquipeGDWidget extends WP_Widget
 	function EquipeGDWidget()
 	{
 		$widget_ops = array('classname' => 'EquipeGDWidget', 'description' => 'Exibe apenas um membro da equipe do Gabinete Digital.' );
-		$this->WP_Widget('EquipeGDWidget', 'Gabinete Digital - Equipe', $widget_ops);
+		$this->WP_Widget('EquipeGDWidget', 'Gabinete Digital - Equipe Membro', $widget_ops);
 	}
 
 	function form($instance)
