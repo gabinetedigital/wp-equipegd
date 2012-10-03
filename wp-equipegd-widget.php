@@ -54,7 +54,7 @@ class ListaEquipeGDWidget extends WP_Widget
 
 	query_posts($args_query_post);
 
-	$txtreturn .= "<div class='equipe'>";
+	$txtreturn .= "<div class='equipe ".$instance['css_class']."'>";
 	$arr = array();
 	$i = 0;
 	if (have_posts()) : 
@@ -74,17 +74,11 @@ class ListaEquipeGDWidget extends WP_Widget
 
 	$array_ordenado = $js->ordenar_array($arr, 'grupo', SORT_ASC, 'ordem', SORT_ASC) or die('<br>ERROR!<br>');
 	
-/*	foreach ($arr as $key => $row) {   
-    	$filtro[$key]  = $row['grupo'];   
-    }
-    array_multisort($filtro, SORT_ASC, $arr);
- */ 
  	$i = 0;
 	$cont=0;
 	$x = 0;
 	$nomegrupo = array();
 	while (list($key, $value) = each($array_ordenado)) {
-    	//$txtreturn .= "Key: $key; Value: $value[grupo]<br />\n";
     	$grupo = substr($value[grupo], 1,strlen($value[grupo]));
     	if ($cont == 0){
     		$grupo_inic = $grupo;
@@ -105,7 +99,6 @@ class ListaEquipeGDWidget extends WP_Widget
     	$txtreturn .= "<li class='span".$colunas."'>";
 		$txtreturn .= "<div class='thumbnail'>";
 		$txtreturn .= "<h4>$value[nome]</h4>";
-		//$txtreturn .= "<h5>".$value[ordem]." - ". substr($value[grupo], 1,strlen($value[grupo])) . " - ". $value[cargo] . "</h5>";
 		$txtreturn .= "<h5>". $value[cargo] . "</h5>";
 		$txtreturn .= "</div>";
 		$txtreturn .= "</li>";
@@ -212,32 +205,36 @@ class EquipeGDWidget extends WP_Widget
     extract($args, EXTR_SKIP);
  
     $args_query_post = '';
+	$txtreturn = '';
 
-    echo "<li class='span".$instance['colunas']."'><div class='thumbnail membro ".$instance['css_class']."'>";
+    $txtreturn .= "<li class='span".$instance['colunas']."'>";
+    $txtreturn .= "<div class='thumbnail membro ".$instance['css_class']."'>";
     $titulo = empty($instance['titulo']) ? ' ' : apply_filters('widget_titulo', $instance['titulo']);
     $post_id = $instance['post_id'];
     $colunas = $instance['colunas'];
     $custom_post = 'equipegd_equipe';
-    
-    echo $before_title . $titulo . $after_title;;
+
+    if(!empty($titulo)){
+    	$txtreturn .= "<h3>".$titulo."</h3>";
+	}
     if (!empty($post_id)):
     	$args_query_post = $args_query_post . "p=" . $post_id . "&post_type=" . $custom_post;
     	query_posts($args_query_post);
     endif;
 	if (have_posts()) : 
-		echo "<ul>";
 		while (have_posts()) : the_post(); 
 			$cargo = get_post_meta(get_the_ID(),'wp_equipegd_cargo', true);
-			$ordem = get_post_meta(get_the_ID(),'wp_equipegd_ordem', true);
-			
-			echo "<li>".get_the_title()."<br>Cargo: " . $cargo . "<br>Ordem: " . $ordem ."</li>";
+
+			$txtreturn .= "<h4>".get_the_title()."</h4>";
+			$txtreturn .= "<h5>". $cargo . "</h5>";
 	 		
 		endwhile;
-		echo "</ul>";
 	endif; 
 	wp_reset_query();
 	
-	echo "</div></li>";
+	$txtreturn .= "</div></li>";
+	
+	echo $txtreturn;
   }
  
 }
