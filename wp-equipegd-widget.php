@@ -42,6 +42,7 @@ class ListaEquipeGDWidget extends WP_Widget
 
     $args_query_post = '';
 	$txtreturn		 = '';
+	$txtreturn_topo  = '';
 	$taxonomy		 = 'grupo_equipegd';
 	$titulo			 = empty($instance['titulo']) ? ' ' : apply_filters('widget_titulo', $instance['titulo']);
     $colunas		 = $instance['colunas'];
@@ -78,6 +79,39 @@ class ListaEquipeGDWidget extends WP_Widget
 	$cont=0;
 	$x = 0;
 	$nomegrupo = array();
+	
+	while (list($key, $value) = each($array_ordenado)) {
+		$grupo = substr($value[grupo], 1,strlen($value[grupo]));
+		if ($cont == 0){
+    		$grupo_inic = $grupo;
+    	}
+    	if($grupo != $grupo_inic){
+    		$grupo_inic = $grupo;
+			$i = 0;
+    	}
+    	if ($i == 0){
+			$x++;
+			$nomegrupo[$x] = $grupo;
+    	}
+		
+		$cont++;
+		$i++;
+	}
+	$txtreturn_topo .= "<div>";
+	$i = 1;
+	foreach($nomegrupo as $g){
+		$txtreturn_topo .= "<a class='equipe-grupo-$i equipe-grupo' data-index=$i>$g</a>";
+		$i++;
+	}
+	$txtreturn_topo .= "</div>";
+	
+	$array_ordenado = $js->ordenar_array($arr, 'grupo', SORT_ASC, 'ordem', SORT_ASC) or die('<br>ERROR!<br>');
+	
+	$i = 0;
+	$cont=0;
+	$x = 0;
+	
+	
 	while (list($key, $value) = each($array_ordenado)) {
     	$grupo = substr($value[grupo], 1,strlen($value[grupo]));
     	if ($cont == 0){
@@ -91,9 +125,9 @@ class ListaEquipeGDWidget extends WP_Widget
     	}
     	if ($i == 0){
 			$x++;
-			$nomegrupo[$x] = $grupo;
     		$txtreturn .= "<div id='equipe-grupo-$x'>";
     		$txtreturn .= "<h3>".$titulo." - ".$grupo."</h3>";
+			$txtreturn .= $txtreturn_topo;
 			$txtreturn .= "<ul class='thumbnails'>";
     	}
     	$txtreturn .= "<li class='span".$colunas."'>";
@@ -110,14 +144,8 @@ class ListaEquipeGDWidget extends WP_Widget
 	$txtreturn .= "</ul>";
 	$txtreturn .= "</div>";
 	$txtreturn .= "<input name='equipe-perpage' type='hidden' id='equipe-perpage' value='$x' />";
-	$txtreturn .= "<div>";
-	$i = 1;
-	foreach($nomegrupo as $g){
-		$txtreturn .= "<a class='equipe-grupo-$i equipe-grupo' data-index=$i>$g</a>";
-		$i++;
-	}
 	$txtreturn .= "</div>";
-	$txtreturn .= "</div>";
+	
 	
 	echo $txtreturn;
   }
