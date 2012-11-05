@@ -97,10 +97,10 @@ class ListaEquipeGDWidget extends WP_Widget
 		$cont++;
 		$i++;
 	}
-	$txtreturn_topo .= "<div>";
+	$txtreturn_topo .= "<div class='btn-group subgrupo' data-toggle='buttons-radio'>";
 	$i = 1;
 	foreach($nomegrupo as $g){
-		$txtreturn_topo .= "<a class='equipe-grupo-$i equipe-grupo' data-index=$i>$g</a>";
+		$txtreturn_topo .= "<button class='btn btn-inverse btn-small equipe-grupo-$i equipe-grupo' data-index=$i>$g</button>";
 		$i++;
 	}
 	$txtreturn_topo .= "</div>";
