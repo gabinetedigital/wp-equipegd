@@ -52,6 +52,8 @@ class ListaEquipeGDWidget extends WP_Widget
 	
 	$args_query_post .= "&orderby=meta_value_num&meta_key=wp_equipegd_ordem";
 	$args_query_post .= "&order=ASC";
+	
+	$args_query_post .= "&posts_per_page=-1"; //para vir todos os posts
 
 	query_posts($args_query_post);
 
